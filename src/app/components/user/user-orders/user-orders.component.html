@@ -1,0 +1,35 @@
+<div class="orders-container">
+    <h1>My Orders</h1>
+
+    <div *ngIf="loading" class="loading">Loading orders...</div>
+
+    <div *ngIf="!loading && orders.length === 0" class="empty-state">
+        <p>You haven't placed any orders yet.</p>
+        <a routerLink="/books" class="btn btn-primary">Start Shopping</a>
+    </div>
+
+    <div *ngIf="!loading && orders.length > 0" class="orders-list">
+        <div *ngFor="let order of orders" class="order-card">
+            <div class="order-header">
+                <div class="order-meta">
+                    <span class="order-id">Order #{{ order.id | slice:0:8 }}</span>
+                    <span class="order-date">{{ order.created_at | date:'mediumDate' }}</span>
+                </div>
+                <div class="order-status badge" [class.success]="order.status === 'completed'"
+                    [class.pending]="order.status === 'pending'">
+                    {{ order.status || 'Processing' }}
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <p>{{ order.items.length || 0 }} items</p>
+                <p class="total-price">${{ order.total_price }}</p>
+            </div>
+
+            <div class="order-actions">
+                <!-- Future: routerLink="/user/orders/{{ order.id }}" -->
+                <button class="btn btn-outline btn-sm">View Details</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="admin-container">
+    <div class="header">
+        <h1>Manage Books</h1>
+        <a routerLink="/admin/book/new" class="btn btn-primary">Add New Book</a>
+    </div>
+
+    <div class="table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let book of books">
+                    <td>
+                        <div class="book-info">
+                            <img [src]="book.image_url || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&q=80&w=100'"
+                                alt="cover">
+                            <span>{{ book.title }}</span>
+                        </div>
+                    </td>
+                    <td>{{ book.author }}</td>
+                    <td>${{ book.price }}</td>
+                    <td>{{ book.stock }}</td> <!-- using pages as proxy for stock/info for now -->
+                    <td>
+                        <div class="actions">
+                            <a [routerLink]="['/admin/book/edit', book.id]" class="btn-icon edit">Edit</a>
+                            <button (click)="deleteBook(book.id)" class="btn-icon delete">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

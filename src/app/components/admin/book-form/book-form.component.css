@@ -1,0 +1,33 @@
+.form-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+h2 {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.span-2 {
+    grid-column: span 2;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+/* Inherits input/label styles from global styles.css */
+
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}

@@ -1,0 +1,67 @@
+<div class="book-detail-container" *ngIf="book; else loadingOrError">
+    <button routerLink="/books" class="back-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
+        </svg>
+        Back to Collection
+    </button>
+
+    <div class="book-card-main">
+        <div class="book-image-container">
+            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=800"
+                alt="{{ book.title }}">
+        </div>
+
+        <div class="book-info">
+            <h1>{{ book.title }}</h1>
+            <p class="author">by {{ book.author }}</p>
+
+            <div class="tags">
+                <span class="tag" *ngFor="let tag of book.tags">{{ tag }}</span>
+                <span class="tag" *ngFor="let lang of book.language">{{ lang }}</span>
+            </div>
+
+            <div class="price-block">
+                <span class="price">${{ book.price }}</span>
+            </div>
+
+            <div class="description-section">
+                <h3>Description</h3>
+                <p class="description">{{ book.description }}</p>
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-item">
+                    <h4>ISBN</h4>
+                    <p>{{ book.isbn }}</p>
+                </div>
+                <div class="detail-item">
+                    <h4>Pages</h4>
+                    <p>{{ book.page_count }}</p>
+                </div>
+                <div class="detail-item">
+                    <h4>Language</h4>
+                    <p>{{ book.language.join(', ') }}</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary btn-lg" (click)="addToCart()">Add into Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingOrError>
+    <div class="container" style="text-align: center; padding: 100px 0;">
+        <div *ngIf="loading">
+            <h2 style="color: var(--text-secondary);">Loading details...</h2>
+        </div>
+        <div *ngIf="error">
+            <h2 style="color: var(--error);">{{ error }}</h2>
+            <button routerLink="/books" class="btn btn-primary" style="margin-top: 20px;">Return to Books</button>
+        </div>
+    </div>
+</ng-template>

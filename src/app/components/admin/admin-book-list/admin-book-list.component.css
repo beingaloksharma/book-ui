@@ -1,0 +1,88 @@
+.admin-container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 16px 24px;
+    text-align: left;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-table th {
+    background: #f8fafc;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.book-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.book-info img {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.book-info span {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-icon {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn-icon.edit {
+    color: var(--primary-color);
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.btn-icon.delete {
+    color: var(--error);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.btn-icon:hover {
+    opacity: 0.8;
+}

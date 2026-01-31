@@ -1,0 +1,30 @@
+<div class="book-container">
+  <div class="header">
+    <h2>Discover Your Next Read</h2>
+    <p>Explore our curated collection of books</p>
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading amazing books...</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div class="book-grid" *ngIf="!loading && !error">
+    <div *ngFor="let book of books" class="book-card">
+      <div class="book-image">
+        <!-- Using a systematic consistent placeholder service or local assets would be better, but via placeholder is fine for now -->
+        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=600"
+          alt="{{ book.title }}">
+      </div>
+      <div class="book-details">
+        <span class="category" *ngIf="book.tags?.length">{{ book.tags[0] }}</span>
+        <h3>{{ book.title | truncate:25 }}</h3>
+        <p class="author">by {{ book.author }}</p>
+
+        <div class="card-footer">
+          <span class="price">${{ book.price }}</span>
+          <a [routerLink]="['/book', book.id]" class="view-btn">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

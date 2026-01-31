@@ -1,0 +1,68 @@
+<div class="cart-container">
+    <h1>Shopping Cart</h1>
+
+    <div *ngIf="loading" class="loading">Loading cart...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <div *ngIf="!loading && !error && cartItems.length === 0" class="empty-cart">
+        <p>Your cart is empty.</p>
+        <a routerLink="/books" class="btn btn-primary">Browse Books</a>
+    </div>
+
+    <div *ngIf="!loading && cartItems.length > 0" class="cart-content">
+        <div class="cart-items">
+            <div *ngFor="let item of cartItems" class="cart-item">
+                <div class="item-info">
+                    <h3>{{ item.book?.title || 'Unknown Book' }}</h3>
+                    <p class="price">${{ item.price }} x {{ item.quantity }}</p>
+                </div>
+                <div class="item-total">
+                    ${{ (item.total || (item.price * item.quantity)) }}
+                </div>
+            </div>
+
+            <div class="cart-summary-row">
+                <h3>Total</h3>
+                <h3>${{ totalAmount }}</h3>
+            </div>
+        </div>
+
+        <div class="checkout-section">
+            <div *ngIf="!isCheckingOut">
+                <button class="btn btn-primary btn-block" (click)="proceedToCheckout()">Proceed to Checkout</button>
+            </div>
+
+            <div *ngIf="isCheckingOut" class="checkout-form">
+                <h3>Shipping Details</h3>
+                <form (ngSubmit)="placeOrder()">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input [(ngModel)]="shippingAddress.city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label>State</label>
+                        <input [(ngModel)]="shippingAddress.state" name="state" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input [(ngModel)]="shippingAddress.country" name="country" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pincode</label>
+                        <input [(ngModel)]="shippingAddress.pincode" name="pincode" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <select [(ngModel)]="paymentMethod" name="payment">
+                            <option value="credit_card">Credit Card</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

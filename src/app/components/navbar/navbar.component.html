@@ -1,0 +1,42 @@
+<nav class="navbar">
+    <div class="container navbar-container">
+        <a routerLink="/" class="logo">
+            <span class="logo-icon">📚</span> BookUi
+        </a>
+
+        <button class="mobile-menu-btn" (click)="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <div class="nav-links" [class.active]="isMenuOpen">
+            <a routerLink="/books" routerLinkActive="active" (click)="isMenuOpen = false">Books</a>
+
+            <ng-container *ngIf="currentUser$ | async as user; else guest">
+                <a *ngIf="isAdmin" routerLink="/admin/books" routerLinkActive="active" (click)="isMenuOpen = false"
+                    class="admin-link">
+                    Admin Dashboard
+                </a>
+                <a routerLink="/cart" routerLinkActive="active" (click)="isMenuOpen = false">
+                    Cart 🛒
+                </a>
+                <a routerLink="/user/orders" routerLinkActive="active" (click)="isMenuOpen = false">
+                    My Orders
+                </a>
+                <a routerLink="/profile" routerLinkActive="active" (click)="isMenuOpen = false">
+                    Profile
+                </a>
+                <div class="user-menu">
+                    <span class="user-greeting">Hi, {{ user.name }}</span>
+                    <button (click)="logout()" class="btn btn-secondary btn-sm">Logout</button>
+                </div>
+            </ng-container>
+
+            <ng-template #guest>
+                <a routerLink="/login" routerLinkActive="active" (click)="isMenuOpen = false"
+                    class="btn btn-primary btn-sm">Login</a>
+            </ng-template>
+        </div>
+    </div>
+</nav>

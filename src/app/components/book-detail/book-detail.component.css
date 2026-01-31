@@ -1,0 +1,159 @@
+.book-detail-container {
+    padding: 60px 20px;
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 30px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    text-decoration: none;
+    padding: 0;
+}
+
+.back-btn:hover {
+    color: var(--primary-color);
+}
+
+.book-card-main {
+    background: white;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    padding: 40px;
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+.book-image-container {
+    flex: 0 0 350px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.book-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.book-info {
+    flex: 1;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.author {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background-color: #f1f5f9;
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.price-block {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.description-section {
+    margin-bottom: 40px;
+}
+
+.description-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+}
+
+.description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+    background-color: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.detail-item h4 {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-sans);
+}
+
+.detail-item p {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.actions {
+    display: flex;
+    gap: 20px;
+}
+
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 900px) {
+    .book-card-main {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .book-image-container {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}

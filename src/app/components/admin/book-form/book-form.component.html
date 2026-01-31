@@ -1,0 +1,57 @@
+<div class="form-container">
+    <div class="card">
+        <h2>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h2>
+
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-grid">
+                <div class="form-group span-2">
+                    <label>Title</label>
+                    <input [(ngModel)]="book.title" name="title" required placeholder="Enter book title">
+                </div>
+
+                <div class="form-group">
+                    <label>Author</label>
+                    <input [(ngModel)]="book.author" name="author" required placeholder="Author name">
+                </div>
+
+                <div class="form-group">
+                    <label>Price ($)</label>
+                    <input type="number" [(ngModel)]="book.price" name="price" required placeholder="0.00">
+                </div>
+
+                <div class="form-group span-2">
+                    <label>Description</label>
+                    <textarea [(ngModel)]="book.description" name="description" rows="4"
+                        placeholder="Book synopsis"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>ISBN</label>
+                    <input [(ngModel)]="book.isbn" name="isbn" placeholder="ISBN-13">
+                </div>
+
+                <div class="form-group">
+                    <label>Pages</label>
+                    <input type="number" [(ngModel)]="book.page_count" name="page_count">
+                </div>
+
+                <div class="form-group">
+                    <label>Language (comma separated)</label>
+                    <input [(ngModel)]="langInput" name="language" placeholder="English, Spanish">
+                </div>
+
+                <div class="form-group span-2">
+                    <label>Tags (comma separated)</label>
+                    <input [(ngModel)]="tagsInput" name="tags" placeholder="Fiction, Bestseller, 2024">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a routerLink="/admin/books" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                    {{ loading ? 'Saving...' : 'Save Book' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
