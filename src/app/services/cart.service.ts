@@ -18,7 +18,7 @@ export interface CartItem {
     providedIn: 'root'
 })
 export class CartService {
-    private apiUrl = '/api/user'; // Proxy to /user
+    private apiUrl = 'http://127.0.0.1:8080';
     private cartSubject = new BehaviorSubject<CartItem[]>([]);
     public cart$ = this.cartSubject.asObservable();
 
@@ -29,7 +29,7 @@ export class CartService {
     ) { }
 
     getCart(): Observable<CartItem[]> {
-        return this.http.get<any>(`${this.apiUrl}/cart`).pipe(
+        return this.http.get<any>(`${this.apiUrl}/user/cart`).pipe(
             map(response => {
                 // Backend returns wrapped response: { data: [...] }
                 const items: CartItem[] = response.data || [];
@@ -51,7 +51,7 @@ export class CartService {
     }
 
     addToCart(item: AddToCartRequest): Observable<any> {
-        return this.http.post(`${this.apiUrl}/cart`, item).pipe(
+        return this.http.post(`${this.apiUrl}/user/cart`, item).pipe(
             tap(() => {
                 // Refresh cart after adding
                 this.getCart().subscribe();
@@ -60,7 +60,7 @@ export class CartService {
     }
 
     placeOrder(orderData: any): Observable<any> {
-        return this.http.post(`${this.apiUrl}/order`, orderData).pipe(
+        return this.http.post(`${this.apiUrl}/user/order`, orderData).pipe(
             tap(() => {
                 this.cartSubject.next([]); // Clear cart locally
             })
@@ -68,11 +68,11 @@ export class CartService {
     }
 
     getOrders(): Observable<Order[]> {
-        return this.http.get<Order[]>(`${this.apiUrl}/orders`);
+        return this.http.get<Order[]>(`${this.apiUrl}/user/orders`);
     }
 
     getOrder(id: string): Observable<Order> {
-        return this.http.get<Order>(`${this.apiUrl}/order/${id}`);
+        return this.http.get<Order>(`${this.apiUrl}/user/order/${id}`);
     }
 }
 

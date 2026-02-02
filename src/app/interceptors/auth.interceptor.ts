@@ -5,6 +5,10 @@ import { isPlatformBrowser } from '@angular/common';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const platformId = inject(PLATFORM_ID);
 
+    if (req.url.endsWith('/login') || req.url.endsWith('/signup')) {
+        return next(req);
+    }
+
     if (isPlatformBrowser(platformId)) {
         const token = localStorage.getItem('auth_token');
         if (token) {

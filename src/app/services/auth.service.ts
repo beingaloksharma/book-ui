@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, BehaviorSubject } from 'rxjs';
+import { Observable, tap, BehaviorSubject, switchMap, of, map } from 'rxjs';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
@@ -9,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = '/';
+    private apiUrl = 'http://127.0.0.1:8080';
     private tokenKey = 'auth_token';
     private userKey = 'user_info';
 
@@ -40,24 +40,47 @@ export class AuthService {
 
     login(credentials: { username: string, password: string }): Observable<any> {
         return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
-            tap((response: any) => {
-                if (response && response.token) {
+            switchMap((response: any) => {
+                // Backend returns data in 'message' field as a map: { token, role, status }
+                if (response && response.message && response.message.token) {
+                    const data = response.message;
                     if (isPlatformBrowser(this.platformId)) {
-                        localStorage.setItem(this.tokenKey, response.token);
+                        localStorage.setItem(this.tokenKey, data.token);
+                        localStorage.setItem('user_role', data.role);
                     }
-                    // Fetch user profile immediately after login to populate currentUser
-                    this.fetchUserProfile().subscribe();
+                    // Fetch and return user profile
+                    return this.fetchUserProfile(data.role);
                 }
+                return of(null);
             })
         );
     }
 
-    // Helper fetch user profile method - requires an endpoint that returns current user
-    fetchUserProfile(): Observable<User> {
-        // Based on router.go: user.GET(constants.PROFILE, app.UserProfile) -> /user/profile
-        return this.http.get<User>(`${this.apiUrl}/user/profile`, {
-            headers: { 'Authorization': `Bearer ${this.getToken()}` }
-        }).pipe(
+    // Helper fetch user profile method
+    fetchUserProfile(role?: string): Observable<User> {
+        if (!role && isPlatformBrowser(this.platformId)) {
+            role = localStorage.getItem('user_role') || 'user';
+        }
+
+        const endpoint = role === 'admin' || role === 'superadmin'
+            ? `${this.apiUrl}/admin/profile`
+            : `${this.apiUrl}/user/profile`;
+
+        return this.http.get<any>(endpoint).pipe(
+            map(response => {
+                if (role === 'admin' || role === 'superadmin') {
+                    // Admin endpoint returns User object directly in message
+                    return response.message as User;
+                } else {
+                    // User endpoint returns { user_profile: User, orders: [] } in message
+                    const data = response.message;
+                    const user = data.user_profile as User;
+                    if (user) {
+                        user.orders = data.orders; // Attach orders if available
+                    }
+                    return user;
+                }
+            }),
             tap(user => {
                 if (isPlatformBrowser(this.platformId)) {
                     localStorage.setItem(this.userKey, JSON.stringify(user));

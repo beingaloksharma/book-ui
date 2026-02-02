@@ -19,7 +19,11 @@ export class LoginComponent {
 
     constructor(private authService: AuthService, private router: Router) {
         if (this.authService.isLoggedIn()) {
-            this.router.navigate(['/books']);
+            if (this.authService.isAdmin()) {
+                this.router.navigate(['/admin/books']);
+            } else {
+                this.router.navigate(['/user/books']);
+            }
         }
     }
 
@@ -32,8 +36,19 @@ export class LoginComponent {
         this.loading = true;
         this.authService.login({ username: this.username, password: this.password }).subscribe({
             next: (res) => {
+                console.log("After Login :: ", res);
                 this.loading = false;
-                this.router.navigate(['/books']);
+
+                if (res) {
+                    if (this.authService.isAdmin()) {
+                        this.router.navigate(['/admin/books']);
+                    } else {
+                        this.router.navigate(['/user/books']);
+                    }
+                } else {
+                    this.error = 'Account is not active';
+                    this.authService.logout(); // Logout if not active
+                }
             },
             error: (err) => {
                 this.loading = false;

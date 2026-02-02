@@ -41,7 +41,7 @@ export class BookFormComponent implements OnInit {
         const id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.isEditMode = true;
-            this.bookService.getBook(id).subscribe(data => {
+            this.bookService.getAdminBook(id).subscribe(data => {
                 this.book = data;
                 this.tagsInput = data.tags ? data.tags.join(', ') : '';
                 this.langInput = data.language ? data.language.join(', ') : '';

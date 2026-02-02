@@ -22,7 +22,7 @@ export class AdminBookListComponent implements OnInit {
     }
 
     loadBooks() {
-        this.bookService.getBooks().subscribe({
+        this.bookService.getAdminBooks().subscribe({
             next: (data) => {
                 this.books = data;
                 this.loading = false;
