@@ -1,134 +1,294 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+}
+
 .book-container {
-  padding: 40px 0;
-  max-width: var(--container-width);
+  padding: 60px 20px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
+  animation: fadeInDown 0.8s ease-out;
 }
 
 .header h2 {
-  font-size: 2.5rem;
-  color: var(--text-primary);
-  margin-bottom: 10px;
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
 }
 
 .header p {
   color: var(--text-secondary);
-  font-size: 1.1rem;
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .book-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 30px;
-  padding: 0 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 60px 40px;
+  perspective: 1000px;
 }
 
-.book-card {
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+.book-wrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  animation: fadeInUp 0.6s ease-out backwards;
 }
 
-.book-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
+.book-wrapper:nth-child(even) {
+  animation-delay: 0.1s;
 }
 
-.book-image {
-  height: 350px;
-  overflow: hidden;
+.book-wrapper:nth-child(3n) {
+  animation-delay: 0.2s;
+}
+
+/* 3D Book Styles */
+.book-card-3d {
   position: relative;
+  width: 220px;
+  height: 330px;
+  transform-style: preserve-3d;
+  transform: rotateY(-30deg);
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  cursor: pointer;
+  margin-bottom: 25px;
+  box-shadow: 15px 20px 40px rgba(0,0,0,0.15);
 }
 
-.book-image img {
+.book-wrapper:hover .book-card-3d {
+  transform: rotateY(0deg) scale(1.05);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+  z-index: 10;
+}
+
+.book-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateZ(25px);
+  background: #fff;
+  border-radius: 4px 4px 4px 0;
+  overflow: hidden;
+  box-shadow: inset 4px 0 10px rgba(0,0,0,0.1);
+}
+
+.book-cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
 }
 
-.book-card:hover .book-image img {
-  transform: scale(1.05);
+.book-spine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 100%;
+  transform: rotateY(-90deg) translateZ(25px); /* Adjusted for positioning */
+  background: linear-gradient(90deg, #fff 0%, #ddd 5%, #fff 10%, #ddd 15%, #fff 20%, #ddd 25%, #fff 30%, #ddd 35%, #fff 100%); /* Faux pages pattern or spine color */
+  background-size: 4px 100%;
+  border-left: 2px solid rgba(0,0,0,0.1);
+  transform-origin: left;
 }
 
-.book-details {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+.book-pages {
+  position: absolute;
+  top: 8px;
+  right: -8px; /* Offset to simulate thickness */
+  width: 45px; /* Thickness */
+  height: calc(100% - 16px);
+  transform: rotateY(90deg) translateZ(-22px);
+  background: #fdfdfd; 
+  background-image: repeating-linear-gradient(
+    90deg, 
+    #fdfdfd 0px, 
+    #f0f0f0 1px, 
+    #fdfdfd 2px
+  );
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
 }
 
-.category {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  color: var(--primary-color);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  margin-bottom: 8px;
+/* Adjust Spine to look like actual binding spine */
+.book-spine {
+  background: #333; /* Dark spine */
+  width: 50px;
+  transform: rotateY(-90deg) translateX(-25px); /* Ensure it attaches to the left edge properly */
+  transform-origin: 0 0;
+}
+/* Re-calibrating the 3D box model */
+.book-card-3d {
+  transform: rotateY(-25deg) rotateX(5deg); /* Initial dramatic angle */
 }
 
-.book-details h3 {
-  margin: 0 0 8px;
-  font-size: 1.25rem;
+/* Front Face (Cover) */
+.book-cover {
+  transform: translateZ(0);
+  background-color: #eee;
+  z-index: 2;
+}
+
+/* Left Face (Spine) */
+.book-spine {
+  width: 40px;
+  height: 100%;
+  background: #5D4037; /* Brownish spine default */
+  transform: rotateY(-90deg) translateZ(0); /* Anchor to left edge */
+  transform-origin: 0 0; /* Pivot from top-left */
+  position: absolute;
+  left: 0; 
+  top: 0;
+  border-radius: 2px 0 0 2px;
+}
+
+/* Right Face (Pages thickness visible from side if rotated other way - usually not needed for this angle but good for completeness or slight rotation) */
+/* We will use a pseudo-element or separate div for the "thickness" seen from the side/bottom if needed. 
+   Actually, for a standing book, we primarily see Cover and Spine.
+*/
+.book-pages {
+  display: none; /* Simplify to just Cover + Spine for the standing book look unless we do a lying down book */
+}
+
+/* Refined 3D transforms */
+.book-card-3d {
+  transform: perspective(2000px) rotateY(-30deg);
+  transform-style: preserve-3d;
+}
+
+/* Better spine implementation */
+.book-spine {
+   background: linear-gradient(to right, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.2) 100%), #444;
+}
+
+/* Details */
+.book-info {
+  text-align: center;
+  padding-top: 15px;
+  width: 100%;
+}
+
+.book-info h3 {
+  font-size: 1.1rem;
   font-weight: 700;
-  line-height: 1.4;
   color: var(--text-primary);
+  margin-bottom: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.author {
+.book-info .author {
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  font-size: 0.95rem;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-.card-footer {
-  margin-top: auto;
+.book-meta {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
+  gap: 15px;
 }
 
 .price {
-  font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-primary);
-}
-
-.view-btn {
-  padding: 8px 16px;
-  background-color: transparent;
+  font-size: 1.1rem;
   color: var(--primary-color);
-  border: 1px solid var(--primary-color);
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  text-decoration: none;
 }
 
-.view-btn:hover {
+.add-btn {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.add-btn:hover {
   background-color: var(--primary-color);
   color: white;
+  border-color: var(--primary-color);
 }
 
-.loading,
-.error {
-  text-align: center;
-  padding: 40px;
-  font-size: 1.2rem;
-  color: var(--text-secondary);
+/* Loading Spinner */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
 }
 
-.error {
-  color: var(--error);
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--surface-ground);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Overlay */
+.book-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.view-text {
+  color: white;
+  font-weight: 600;
+  border: 2px solid white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transform: translateY(20px);
+  transition: transform 0.3s;
+}
+
+.book-wrapper:hover .book-overlay {
+  opacity: 1;
+}
+
+.book-wrapper:hover .view-text {
+  transform: translateY(0);
 }

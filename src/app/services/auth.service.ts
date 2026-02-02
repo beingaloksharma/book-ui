@@ -118,4 +118,11 @@ export class AuthService {
         const user = this.currentUserSubject.value;
         return user?.type === 'admin' || user?.type === 'superadmin';
     }
+
+    forgotPassword(email: string): Observable<any> {
+        console.log(`AuthService: Requesting password reset for ${email}`);
+        // Mocking backend call since endpoint is likely not ready
+        // In real scenario: return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+        return of({ success: true, message: 'Password reset link sent' });
+    }
 }

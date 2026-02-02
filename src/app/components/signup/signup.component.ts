@@ -5,10 +5,23 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
     selector: 'app-signup',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        MatCardModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule
+    ],
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.css']
 })
@@ -50,12 +63,14 @@ export class SignupComponent {
         };
 
         this.authService.register(payload as any).subscribe({
-            next: () => {
+            next: (res) => {
+                console.log("Signup Successful:", res);
                 alert('Account created successfully! Please login.');
+                console.log("Redirecting to /login");
                 this.router.navigate(['/login']);
             },
             error: (err) => {
-                console.error(err);
+                console.error("Signup Failed:", err);
                 this.loading = false;
                 this.error = err.error?.message || 'Failed to create account. Please try again.';
             }

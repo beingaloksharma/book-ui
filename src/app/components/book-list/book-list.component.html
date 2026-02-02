@@ -1,28 +1,37 @@
 <div class="book-container">
   <div class="header">
     <h2>Discover Your Next Read</h2>
-    <p>Explore our curated collection of books</p>
+    <p>Explore our curated collection of masterpieces</p>
   </div>
 
-  <div *ngIf="loading" class="loading">Loading amazing books...</div>
+  <div *ngIf="loading" class="loading-container">
+    <div class="loader"></div>
+  </div>
 
-  <div *ngIf="error" class="error">{{ error }}</div>
+  <!-- We removed the generic error display as requested -->
 
-  <div class="book-grid" *ngIf="!loading && !error">
-    <div *ngFor="let book of books" class="book-card">
-      <div class="book-image">
-        <!-- Using a systematic consistent placeholder service or local assets would be better, but via placeholder is fine for now -->
-        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=600"
-          alt="{{ book.title }}">
+  <div class="book-grid" *ngIf="!loading">
+    <div *ngFor="let book of books" class="book-wrapper">
+      <div class="book-card-3d" [routerLink]="['/book', book.id]">
+        <div class="book-cover">
+          <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=600"
+            alt="{{ book.title }}">
+          <div class="book-overlay">
+            <span class="view-text">View Details</span>
+          </div>
+        </div>
+        <div class="book-spine"></div>
+        <div class="book-pages"></div>
       </div>
-      <div class="book-details">
-        <span class="category" *ngIf="book.tags?.length">{{ book.tags[0] }}</span>
-        <h3>{{ book.title | truncate:25 }}</h3>
-        <p class="author">by {{ book.author }}</p>
 
-        <div class="card-footer">
+      <div class="book-info">
+        <h3>{{ book.title | truncate:30 }}</h3>
+        <p class="author">by {{ book.author }}</p>
+        <div class="book-meta">
           <span class="price">${{ book.price }}</span>
-          <a [routerLink]="['/book', book.id]" class="view-btn">View Details</a>
+          <button [routerLink]="['/book', book.id]" class="add-btn">
+            View
+          </button>
         </div>
       </div>
     </div>

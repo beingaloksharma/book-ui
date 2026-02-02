@@ -1,67 +1,120 @@
-<div class="signup-container">
-    <div class="card signup-card">
-        <h2>Create Account</h2>
-        <p class="subtitle">Join our community of book lovers</p>
+<div class="d-flex justify-content-center align-items-center min-vh-100 position-relative overflow-hidden py-4"
+    style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
 
-        <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
-            <div *ngIf="error" class="error-message">{{ error }}</div>
+    <!-- Decorative Background Circles -->
+    <div class="position-absolute rounded-circle bg-primary opacity-25"
+        style="width: 400px; height: 400px; top: -150px; left: -100px; filter: blur(70px);"></div>
+    <div class="position-absolute rounded-circle bg-secondary opacity-25"
+        style="width: 300px; height: 300px; bottom: -50px; right: -50px; filter: blur(70px);"></div>
 
-            <div class="form-grid">
-                <div class="form-group full-width">
-                    <label>Full Name</label>
-                    <input type="text" [(ngModel)]="user.name" name="name" required placeholder="John Doe">
-                </div>
-
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" [(ngModel)]="user.username" name="username" required placeholder="johndoe">
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" [(ngModel)]="user.email" name="email" required email
-                        placeholder="john@example.com">
-                </div>
-
-                <div class="form-group full-width">
-                    <label>Password</label>
-                    <input type="password" [(ngModel)]="password" name="password" required minlength="6"
-                        placeholder="******">
-                </div>
-
-                <!-- Address Section -->
-                <div class="form-group full-width">
-                    <h4
-                        style="margin: 10px 0; color: var(--text-secondary); border-bottom: 1px solid #eee; padding-bottom: 5px;">
-                        Address</h4>
-                </div>
-
-                <div class="form-group">
-                    <label>City</label>
-                    <input type="text" [(ngModel)]="user.address.city" name="city" required placeholder="New York">
-                </div>
-
-                <div class="form-group">
-                    <label>State</label>
-                    <input type="text" [(ngModel)]="user.address.state" name="state" required placeholder="NY">
-                </div>
-
-                <div class="form-group">
-                    <label>Country</label>
-                    <input type="text" [(ngModel)]="user.address.country" name="country" required placeholder="USA">
-                </div>
-
-                <div class="form-group">
-                    <label>Pincode</label>
-                    <input type="text" [(ngModel)]="user.address.pincode" name="pincode" required placeholder="10001">
-                </div>
+    <mat-card class="signup-card shadow-lg animate-fade-in" style="max-width: 700px; width: 100%; border-radius: 16px;">
+        <div class="card-header-visual position-relative overflow-hidden"
+            style="height: 100px; background: linear-gradient(45deg, var(--secondary-color, #ec4899), var(--primary-color, #6366f1)); border-radius: 16px 16px 50% 50% / 0 0 15% 15%;">
+            <div class="text-center pt-4 text-white">
+                <h2 class="m-0 fw-bold">Create Account</h2>
             </div>
+        </div>
 
-            <button type="submit" class="btn btn-primary btn-block" [disabled]="!signupForm.form.valid || loading">
-                {{ loading ? 'Creating Account...' : 'Sign Up' }}
-            </button>
+        <mat-card-content class="px-4 pt-4 pb-3">
+            <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+                <div *ngIf="error" class="alert alert-danger py-2 small d-flex align-items-center mb-3">
+                    <mat-icon class="me-2" style="font-size: 18px; width: 18px; height: 18px;">error</mat-icon>
+                    {{ error }}
+                </div>
 
-            <p class="footer-text">Already have an account? <a routerLink="/login">Login</a></p>
-        </form>
-    </div>
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Full Name</mat-label>
+                            <input matInput [(ngModel)]="user.name" name="name" required placeholder="John Doe">
+                            <mat-icon matSuffix>badge</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Username</mat-label>
+                            <input matInput [(ngModel)]="user.username" name="username" required placeholder="johndoe">
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Email</mat-label>
+                            <input matInput type="email" [(ngModel)]="user.email" name="email" required email
+                                placeholder="john@example.com">
+                            <mat-icon matSuffix>email</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Password</mat-label>
+                            <input matInput type="password" [(ngModel)]="password" name="password" required
+                                minlength="6" placeholder="******">
+                            <mat-icon matSuffix>lock</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="my-3">
+                    <span
+                        class="text-muted small text-uppercase fw-bold letter-spacing-1 d-block border-bottom pb-1">Address
+                        Details</span>
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>City</mat-label>
+                            <input matInput [(ngModel)]="user.address.city" name="city" required placeholder="New York">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>State</mat-label>
+                            <input matInput [(ngModel)]="user.address.state" name="state" required placeholder="NY">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Country</mat-label>
+                            <input matInput [(ngModel)]="user.address.country" name="country" required
+                                placeholder="USA">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Pincode</mat-label>
+                            <input matInput [(ngModel)]="user.address.pincode" name="pincode" required
+                                placeholder="10001">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <button mat-raised-button color="accent" class="w-100 py-1 fw-bold mt-3" type="submit"
+                    [disabled]="!signupForm.form.valid || loading" style="height: 45px; border-radius: 25px;">
+                    {{ loading ? 'Creating Account...' : 'Sign Up' }}
+                </button>
+            </form>
+        </mat-card-content>
+
+        <div class="px-4">
+            <div class="d-flex align-items-center my-3">
+                <hr class="flex-grow-1 text-muted">
+                <span class="px-3 text-muted small">OR</span>
+                <hr class="flex-grow-1 text-muted">
+            </div>
+        </div>
+
+        <mat-card-actions class="d-flex justify-content-center pb-4 px-4 flex-column">
+            <p class="text-muted small mb-2">Already have an account?</p>
+            <button mat-stroked-button color="primary" routerLink="/login" class="w-100"
+                style="border-radius: 25px;">Login To Account</button>
+        </mat-card-actions>
+    </mat-card>
 </div>

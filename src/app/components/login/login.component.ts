@@ -1,13 +1,27 @@
 import { Component } from '@angular/core';
+// Rebuild trigger 2
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        MatCardModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule
+    ],
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css']
 })
@@ -22,7 +36,7 @@ export class LoginComponent {
             if (this.authService.isAdmin()) {
                 this.router.navigate(['/admin/books']);
             } else {
-                this.router.navigate(['/user/books']);
+                this.router.navigate(['/books']);
             }
         }
     }
@@ -36,24 +50,30 @@ export class LoginComponent {
         this.loading = true;
         this.authService.login({ username: this.username, password: this.password }).subscribe({
             next: (res) => {
-                console.log("After Login :: ", res);
+                console.log("Login Response:", res);
                 this.loading = false;
 
                 if (res) {
-                    if (this.authService.isAdmin()) {
+                    const isAdmin = this.authService.isAdmin();
+                    console.log(`User/Admin check: Is Admin? ${isAdmin}`);
+
+                    if (isAdmin) {
+                        console.log("Redirecting to /admin/books");
                         this.router.navigate(['/admin/books']);
                     } else {
-                        this.router.navigate(['/user/books']);
+                        console.log("Redirecting to /books");
+                        this.router.navigate(['/books']);
                     }
                 } else {
+                    console.warn("Login successful but no user/token returned or account inactive.");
                     this.error = 'Account is not active';
-                    this.authService.logout(); // Logout if not active
+                    this.authService.logout();
                 }
             },
             error: (err) => {
+                console.error("Login Error:", err);
                 this.loading = false;
-                this.error = 'Invalid credentials';
-                console.error(err);
+                this.error = 'Invalid credentials or server error';
             }
         });
     }

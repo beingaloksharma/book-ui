@@ -35,9 +35,8 @@ export class BookListComponent implements OnInit {
                     this.router.navigate(['/login']);
                     return;
                 }
-                this.error = 'Failed to load books. Please login.';
+                // Suppress error message as requested
                 this.loading = false;
-                console.error(err);
             }
         });
     }

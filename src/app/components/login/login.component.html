@@ -1,28 +1,64 @@
-<div class="login-container">
-    <div class="card login-card-inner">
-        <h2>Welcome Back</h2>
-        <p class="subtitle">Please login to continue</p>
+<div class="d-flex justify-content-center align-items-center min-vh-100 position-relative overflow-hidden"
+    style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
 
-        <form (ngSubmit)="onSubmit()">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" [(ngModel)]="username" name="username" required
-                    placeholder="Enter your username">
+    <!-- Decorative Background Circles (using pure css or similar logic) -->
+    <div class="position-absolute rounded-circle bg-primary opacity-25"
+        style="width: 300px; height: 300px; top: -100px; right: -50px; filter: blur(60px);"></div>
+    <div class="position-absolute rounded-circle bg-secondary opacity-25"
+        style="width: 250px; height: 250px; bottom: -50px; left: -50px; filter: blur(60px);"></div>
+
+    <mat-card class="login-card shadow-lg animate-fade-in" style="max-width: 420px; width: 100%; border-radius: 16px;">
+        <div class="card-header-visual position-relative overflow-hidden"
+            style="height: 100px; background: linear-gradient(45deg, var(--primary-color, #6366f1), var(--primary-dark, #4338ca)); border-radius: 16px 16px 50% 50% / 0 0 15% 15%;">
+            <div class="text-center pt-4 text-white">
+                <h2 class="m-0 fw-bold">Welcome Back</h2>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" [(ngModel)]="password" name="password" required
-                    placeholder="Enter your password">
+        <mat-card-content class="px-4 pt-5 pb-3">
+            <form (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="outline" class="w-100 mb-1">
+                    <mat-label>Username</mat-label>
+                    <input matInput [(ngModel)]="username" name="username" required placeholder="Enter your username">
+                    <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100 mb-1">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" [(ngModel)]="password" name="password" required
+                        placeholder="Enter your password">
+                    <mat-icon matSuffix>lock</mat-icon>
+                </mat-form-field>
+
+                <div *ngIf="error" class="alert alert-danger py-2 small d-flex align-items-center mb-3">
+                    <mat-icon class="me-2" style="font-size: 18px; width: 18px; height: 18px;">error</mat-icon>
+                    {{ error }}
+                </div>
+
+                <div class="d-flex justify-content-end mb-3">
+                    <a routerLink="/forgot-password"
+                        class="text-decoration-none text-secondary small text-hover-primary">Forgot Password?</a>
+                </div>
+
+                <button mat-raised-button color="primary" class="w-100 py-1 fw-bold" type="submit" [disabled]="loading"
+                    style="height: 45px; border-radius: 25px;">
+                    {{ loading ? 'Logging in...' : 'LOGIN' }}
+                </button>
+            </form>
+        </mat-card-content>
+
+        <div class="px-4">
+            <div class="d-flex align-items-center my-3">
+                <hr class="flex-grow-1 text-muted">
+                <span class="px-3 text-muted small">OR</span>
+                <hr class="flex-grow-1 text-muted">
             </div>
+        </div>
 
-            <div *ngIf="error" class="error-message">{{ error }}</div>
-
-            <button type="submit" [disabled]="loading" class="btn btn-primary btn-block">
-                {{ loading ? 'Logging in...' : 'Login' }}
-            </button>
-
-            <p class="footer-text">Don't have an account? <a routerLink="/signup">Sign up</a></p>
-        </form>
-    </div>
+        <mat-card-actions class="d-flex justify-content-center pb-4 px-4 flex-column">
+            <p class="text-muted small mb-2">Don't have an account?</p>
+            <button mat-stroked-button color="accent" routerLink="/signup" class="w-100"
+                style="border-radius: 25px;">Create Account</button>
+        </mat-card-actions>
+    </mat-card>
 </div>
