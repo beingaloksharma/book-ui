@@ -9,11 +9,12 @@ export interface User {
     id: string;
     name: string;
     email: string;
-    address: Address;
+    address: Address[];
     created_at: string;
     updated_at: string;
     username: string;
     status: string;
     type: string;
+    password?: string;
     orders: any[]; // Avoid circular dependency or define Order separately
 }

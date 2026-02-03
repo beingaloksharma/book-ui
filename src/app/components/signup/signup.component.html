@@ -58,43 +58,7 @@
                     </div>
                 </div>
 
-                <div class="my-3">
-                    <span
-                        class="text-muted small text-uppercase fw-bold letter-spacing-1 d-block border-bottom pb-1">Address
-                        Details</span>
-                </div>
-
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>City</mat-label>
-                            <input matInput [(ngModel)]="user.address.city" name="city" required placeholder="New York">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>State</mat-label>
-                            <input matInput [(ngModel)]="user.address.state" name="state" required placeholder="NY">
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Country</mat-label>
-                            <input matInput [(ngModel)]="user.address.country" name="country" required
-                                placeholder="USA">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Pincode</mat-label>
-                            <input matInput [(ngModel)]="user.address.pincode" name="pincode" required
-                                placeholder="10001">
-                        </mat-form-field>
-                    </div>
-                </div>
+                <!-- Address Details Removed as API does not support address on signup -->
 
                 <button mat-raised-button color="accent" class="w-100 py-1 fw-bold mt-3" type="submit"
                     [disabled]="!signupForm.form.valid || loading" style="height: 45px; border-radius: 25px;">

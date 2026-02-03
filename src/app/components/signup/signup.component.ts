@@ -37,12 +37,7 @@ export class SignupComponent {
         created_at: '',
         updated_at: '',
         orders: [],
-        address: {
-            city: '',
-            state: '',
-            country: '',
-            pincode: ''
-        }
+        address: []
     };
     password = '';
     loading = false;

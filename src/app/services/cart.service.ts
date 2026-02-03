@@ -18,9 +18,10 @@ export interface CartItem {
     providedIn: 'root'
 })
 export class CartService {
-    private apiUrl = 'http://127.0.0.1:8080';
     private cartSubject = new BehaviorSubject<CartItem[]>([]);
     public cart$ = this.cartSubject.asObservable();
+
+    private mockOrders: Order[] = [];
 
     constructor(
         private http: HttpClient,
@@ -29,50 +30,66 @@ export class CartService {
     ) { }
 
     getCart(): Observable<CartItem[]> {
-        return this.http.get<any>(`${this.apiUrl}/user/cart`).pipe(
-            map(response => {
-                // Backend returns wrapped response: { data: [...] }
-                const items: CartItem[] = response.data || [];
-                return items;
-            }),
-            switchMap(items => {
-                // If items don't have book details (title, etc), fetch them
-                if (items.length === 0) return of([]);
-
-                const fileRequests = items.map(item =>
-                    this.bookService.getBook(item.book_id).pipe(
-                        map(book => ({ ...item, book }))
-                    )
-                );
-                return forkJoin(fileRequests);
-            }),
-            tap(items => this.cartSubject.next(items))
-        );
+        return of(this.cartSubject.value);
     }
 
     addToCart(item: AddToCartRequest): Observable<any> {
-        return this.http.post(`${this.apiUrl}/user/cart`, item).pipe(
-            tap(() => {
-                // Refresh cart after adding
-                this.getCart().subscribe();
+        return this.bookService.getBook(item.book_id).pipe(
+            map(book => {
+                const currentItems = this.cartSubject.value;
+                const existingItemIndex = currentItems.findIndex(i => i.book_id === item.book_id);
+
+                let updatedItems = [...currentItems];
+                if (existingItemIndex > -1) {
+                    updatedItems[existingItemIndex].quantity += item.quantity;
+                    updatedItems[existingItemIndex].total = updatedItems[existingItemIndex].quantity * updatedItems[existingItemIndex].price;
+                } else {
+                    const newItem: CartItem = {
+                        book_id: item.book_id,
+                        quantity: item.quantity,
+                        price: item.price,
+                        total: item.price * item.quantity,
+                        book: book
+                    };
+                    updatedItems.push(newItem);
+                }
+
+                this.cartSubject.next(updatedItems);
+                return { success: true, message: 'Added to cart' };
             })
         );
     }
 
     placeOrder(orderData: any): Observable<any> {
-        return this.http.post(`${this.apiUrl}/user/order`, orderData).pipe(
-            tap(() => {
-                this.cartSubject.next([]); // Clear cart locally
-            })
-        );
+        const order: Order = {
+            id: Math.random().toString(36).substr(2, 9),
+            user_id: 'user-123', // mock
+            items: this.cartSubject.value.map(c => ({
+                book_id: c.book_id,
+                title: c.book?.title || 'Unknown',
+                quantity: c.quantity,
+                price: c.price,
+                total: c.total,
+                seller_id: 'seller-1'
+            })),
+            total_price: this.cartSubject.value.reduce((acc, curr) => acc + curr.total, 0),
+            payment_method: orderData.payment_method,
+            shipping_address: orderData.shipping_address,
+            seller_address: { city: 'Mock City', state: 'Mock State', country: 'Mock Country', pincode: '000000' },
+            status: 'placed',
+            created_at: new Date().toISOString()
+        };
+        this.mockOrders.push(order);
+        this.cartSubject.next([]); // Clear cart locally
+        return of({ success: true, order_id: order.id });
     }
 
     getOrders(): Observable<Order[]> {
-        return this.http.get<Order[]>(`${this.apiUrl}/user/orders`);
+        return of(this.mockOrders);
     }
 
     getOrder(id: string): Observable<Order> {
-        return this.http.get<Order>(`${this.apiUrl}/user/order/${id}`);
+        return of(this.mockOrders.find(o => o.id === id) as Order);
     }
 }
 

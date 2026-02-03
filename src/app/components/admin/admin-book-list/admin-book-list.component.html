@@ -12,6 +12,7 @@
                     <th>Author</th>
                     <th>Price</th>
                     <th>Stock</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -27,6 +28,12 @@
                     <td>{{ book.author }}</td>
                     <td>${{ book.price }}</td>
                     <td>{{ book.stock }}</td> <!-- using pages as proxy for stock/info for now -->
+                    <td>
+                        <span (click)="updateStatus(book)" [class]="'status-badge ' + book.status"
+                            style="cursor: pointer;">
+                            {{ book.status | titlecase }}
+                        </span>
+                    </td>
                     <td>
                         <div class="actions">
                             <a [routerLink]="['/admin/book/edit', book.id]" class="btn-icon edit">Edit</a>

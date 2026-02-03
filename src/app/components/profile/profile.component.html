@@ -13,10 +13,13 @@
                 <p><strong>Username:</strong> {{ user.username }}</p>
             </div>
 
-            <div class="detail-group" *ngIf="user.address">
-                <h3>Address</h3>
-                <p>{{ user.address.city }}, {{ user.address.state }}</p>
-                <p>{{ user.address.country }} - {{ user.address.pincode }}</p>
+            <div class="detail-group" *ngIf="user.address && user.address.length > 0">
+                <h3>Addresses</h3>
+                <div *ngFor="let addr of user.address; let i = index" class="address-item">
+                    <p><strong>Address {{i+1}}:</strong></p>
+                    <p>{{ addr.city }}, {{ addr.state }}</p>
+                    <p>{{ addr.country }} - {{ addr.pincode }}</p>
+                </div>
             </div>
         </div>
 

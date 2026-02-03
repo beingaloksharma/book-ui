@@ -41,7 +41,7 @@ export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
                     method: req.method,
                     status: error.status,
                     duration: duration,
-                    data: error.message
+                    data: { message: error.message, error: error.error }
                 });
             }
         })

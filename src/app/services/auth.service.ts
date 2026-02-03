@@ -1,15 +1,14 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, BehaviorSubject, switchMap, of, map } from 'rxjs';
+import { Observable, BehaviorSubject, switchMap, map, tap, of } from 'rxjs';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = 'http://127.0.0.1:8080';
+    private apiUrl = 'http://localhost:8080';
     private tokenKey = 'auth_token';
     private userKey = 'user_info';
 
@@ -18,22 +17,19 @@ export class AuthService {
 
     constructor(
         private http: HttpClient,
-        private router: Router,
-        @Inject(PLATFORM_ID) private platformId: Object
+        private router: Router
     ) {
         this.loadUserFromStorage();
     }
 
     private loadUserFromStorage() {
-        if (isPlatformBrowser(this.platformId)) {
-            const userStr = localStorage.getItem(this.userKey);
-            if (userStr) {
-                try {
-                    const user = JSON.parse(userStr);
-                    this.currentUserSubject.next(user);
-                } catch (e) {
-                    console.error('Error parsing user from storage', e);
-                }
+        const userStr = localStorage.getItem(this.userKey);
+        if (userStr) {
+            try {
+                const user = JSON.parse(userStr);
+                this.currentUserSubject.next(user);
+            } catch (e) {
+                console.error('Error parsing user from storage', e);
             }
         }
     }
@@ -41,73 +37,64 @@ export class AuthService {
     login(credentials: { username: string, password: string }): Observable<any> {
         return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
             switchMap((response: any) => {
-                // Backend returns data in 'message' field as a map: { token, role, status }
+                // Backend returns SuccessDTO: { success_code, success_message, message: { token: "...", role: "..." } }
                 if (response && response.message && response.message.token) {
                     const data = response.message;
-                    if (isPlatformBrowser(this.platformId)) {
-                        localStorage.setItem(this.tokenKey, data.token);
-                        localStorage.setItem('user_role', data.role);
-                    }
-                    // Fetch and return user profile
-                    return this.fetchUserProfile(data.role);
+                    localStorage.setItem(this.tokenKey, data.token);
+
+                    // Fetch profile to get user details and role
+                    return this.fetchUserProfile(data.role || 'user');
                 }
-                return of(null);
+                throw new Error('Invalid login response');
             })
         );
     }
 
     // Helper fetch user profile method
     fetchUserProfile(role?: string): Observable<User> {
-        if (!role && isPlatformBrowser(this.platformId)) {
-            role = localStorage.getItem('user_role') || 'user';
-        }
-
-        const endpoint = role === 'admin' || role === 'superadmin'
-            ? `${this.apiUrl}/admin/profile`
-            : `${this.apiUrl}/user/profile`;
-
-        return this.http.get<any>(endpoint).pipe(
+        // Try /user/profile to get current user details
+        return this.http.get<any>(`${this.apiUrl}/${role}/profile`).pipe(
             map(response => {
-                if (role === 'admin' || role === 'superadmin') {
-                    // Admin endpoint returns User object directly in message
-                    return response.message as User;
-                } else {
-                    // User endpoint returns { user_profile: User, orders: [] } in message
-                    const data = response.message;
-                    const user = data.user_profile as User;
-                    if (user) {
-                        user.orders = data.orders; // Attach orders if available
-                    }
-                    return user;
-                }
+                // response.message is ResponseUserDTO
+                // dtos.ResponseUserDTO { ID, Name, Email, Address, Username, Status }
+                // Frontend User model has: { id, name, email, address, created_at, updated_at, username, status, type, orders }
+                const userDTO = response.message;
+                const user: User = {
+                    ...userDTO,
+                    created_at: '', // Not in ResponseUserDTO
+                    updated_at: '', // Not in ResponseUserDTO
+                    type: role || 'user', // Use passed role or default to 'user'
+                    orders: []
+                };
+                return user;
             }),
             tap(user => {
-                if (isPlatformBrowser(this.platformId)) {
-                    localStorage.setItem(this.userKey, JSON.stringify(user));
-                }
+                localStorage.setItem(this.userKey, JSON.stringify(user));
                 this.currentUserSubject.next(user);
             })
         );
     }
 
     register(user: User): Observable<any> {
-        return this.http.post(`${this.apiUrl}/signup`, user);
+        // Map to RequestUserDTO: name, email, password, username
+        const payload = {
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            username: user.username
+        };
+        return this.http.post(`${this.apiUrl}/signup`, payload);
     }
 
     logout() {
-        if (isPlatformBrowser(this.platformId)) {
-            localStorage.removeItem(this.tokenKey);
-            localStorage.removeItem(this.userKey);
-        }
+        localStorage.removeItem(this.tokenKey);
+        localStorage.removeItem(this.userKey);
         this.currentUserSubject.next(null);
         this.router.navigate(['/login']);
     }
 
     getToken(): string | null {
-        if (isPlatformBrowser(this.platformId)) {
-            return localStorage.getItem(this.tokenKey);
-        }
-        return null;
+        return localStorage.getItem(this.tokenKey);
     }
 
     isLoggedIn(): boolean {
@@ -120,9 +107,7 @@ export class AuthService {
     }
 
     forgotPassword(email: string): Observable<any> {
-        console.log(`AuthService: Requesting password reset for ${email}`);
-        // Mocking backend call since endpoint is likely not ready
-        // In real scenario: return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+        // Mock implementation as endpoint is not available
         return of({ success: true, message: 'Password reset link sent' });
     }
 }

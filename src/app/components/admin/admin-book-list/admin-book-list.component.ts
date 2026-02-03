@@ -41,4 +41,17 @@ export class AdminBookListComponent implements OnInit {
             });
         }
     }
+
+    updateStatus(book: Book) {
+        const newStatus = book.status === 'active' ? 'inactive' : 'active';
+        this.bookService.updateBookStatus(book.id, newStatus).subscribe({
+            next: () => {
+                book.status = newStatus;
+            },
+            error: (err) => {
+                console.error(err);
+                alert('Failed to update status');
+            }
+        });
+    }
 }
