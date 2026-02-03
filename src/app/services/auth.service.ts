@@ -63,7 +63,7 @@ export class AuthService {
                     ...userDTO,
                     created_at: '', // Not in ResponseUserDTO
                     updated_at: '', // Not in ResponseUserDTO
-                    type: role || 'user', // Use passed role or default to 'user'
+                    role: role || 'user', // Use passed role or default to 'user'
                     orders: []
                 };
                 return user;
@@ -103,7 +103,7 @@ export class AuthService {
 
     isAdmin(): boolean {
         const user = this.currentUserSubject.value;
-        return user?.type === 'admin' || user?.type === 'superadmin';
+        return user?.role === 'admin' || user?.role === 'superadmin';
     }
 
     forgotPassword(email: string): Observable<any> {

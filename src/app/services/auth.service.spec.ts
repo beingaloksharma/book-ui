@@ -38,9 +38,9 @@ describe('AuthService', () => {
     it('should register a user', () => {
         const newUser: User = {
             id: '1', name: 'Test User', email: 'test@example.com', username: 'testuser',
-            status: 'active', type: 'user', orders: [],
+            status: 'active', role: 'user', orders: [],
             created_at: '', updated_at: '',
-            address: { city: 'NY', state: 'NY', country: 'USA', pincode: '10001' }
+            address: [{ city: 'NY', state: 'NY', country: 'USA', pincode: '10001' }]
         };
 
         service.register(newUser).subscribe(res => {

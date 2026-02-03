@@ -15,9 +15,12 @@
 
             <ng-container *ngIf="currentUser$ | async as user; else guest">
                 <a *ngIf="isAdmin" routerLink="/admin/books" routerLinkActive="active" (click)="isMenuOpen = false"
-                    class="admin-link">
-                    Admin Dashboard
-                </a>
+                    class="admin-link">Books</a>
+                <a *ngIf="isAdmin" routerLink="/admin/users" routerLinkActive="active" (click)="isMenuOpen = false"
+                    class="admin-link">Users</a>
+                <a *ngIf="isAdmin" routerLink="/admin/orders" routerLinkActive="active" (click)="isMenuOpen = false"
+                    class="admin-link">Orders</a>
+
                 <a routerLink="/cart" routerLinkActive="active" (click)="isMenuOpen = false">
                     Cart 🛒
                 </a>

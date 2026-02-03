@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CartService, CartItem } from '../../services/cart.service';
+import { CartService, CartItem } from '../../../services/cart.service';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Address } from '../../models/user.model';
+import { Address } from '../../../models/user.model';
 import Swal from 'sweetalert2';
 
 @Component({

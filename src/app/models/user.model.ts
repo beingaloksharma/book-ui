@@ -14,7 +14,7 @@ export interface User {
     updated_at: string;
     username: string;
     status: string;
-    type: string;
+    role: string;
     password?: string;
     orders: any[]; // Avoid circular dependency or define Order separately
 }

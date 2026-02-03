@@ -32,7 +32,7 @@ export class SignupComponent {
         name: '',
         email: '',
         username: '',
-        type: 'user',
+        role: 'user',
         status: 'active',
         created_at: '',
         updated_at: '',
