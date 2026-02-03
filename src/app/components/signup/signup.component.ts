@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
+import Swal from 'sweetalert2';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -65,15 +66,28 @@ export class SignupComponent {
         this.authService.register(payload as any).subscribe({
             next: (res) => {
                 console.log("Signup Successful:", res);
-                alert('Account created successfully! Please login.');
-                console.log("Redirecting to /login");
-                this.router.navigate(['/login']);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Account Created!',
+                    text: 'Please login to continue.',
+                    confirmButtonColor: '#6366f1'
+                }).then(() => {
+                    this.router.navigate(['/login']);
+                });
             },
             error: (err) => {
                 console.error("Signup Failed:", err);
                 this.loading = false;
                 this.error = err.error?.message || 'Failed to create account. Please try again.';
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Signup Failed',
+                    text: this.error,
+                    confirmButtonColor: '#ef4444'
+                });
             }
         });
     }
 }
+

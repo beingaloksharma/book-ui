@@ -14,11 +14,11 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
-    { path: 'books', component: BookListComponent },
     { path: 'book/:id', component: BookDetailComponent },
     { path: 'cart', component: CartComponent },
     { path: 'profile', component: ProfileComponent },
     { path: 'user/orders', component: UserOrdersComponent },
+    { path: 'user/booklist', component: BookListComponent },
 
     // Admin Routes
     { path: 'admin/books', component: AdminBookListComponent },

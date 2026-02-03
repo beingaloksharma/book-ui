@@ -4,6 +4,7 @@ import { CartService, CartItem } from '../../services/cart.service';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Address } from '../../models/user.model';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-cart',
@@ -43,6 +44,11 @@ export class CartComponent implements OnInit {
                 this.error = 'Failed to load cart';
                 this.loading = false;
                 console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load cart items.'
+                });
             }
         });
     }
@@ -57,7 +63,11 @@ export class CartComponent implements OnInit {
 
     placeOrder() {
         if (!this.shippingAddress.city || !this.shippingAddress.state) {
-            alert('Please fill in address details');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Address',
+                text: 'Please fill in address details'
+            });
             return;
         }
 
@@ -71,13 +81,24 @@ export class CartComponent implements OnInit {
 
         this.cartService.placeOrder(orderData).subscribe({
             next: () => {
-                alert('Order placed successfully!');
-                this.router.navigate(['/books']);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Order Placed!',
+                    text: 'Your order has been placed successfully.',
+                    confirmButtonColor: '#6366f1'
+                }).then(() => {
+                    this.router.navigate(['/books']);
+                });
             },
             error: (err) => {
-                alert('Failed to place order');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed',
+                    text: 'Failed to place order. Please try again.'
+                });
                 console.error(err);
             }
         });
     }
 }
+
