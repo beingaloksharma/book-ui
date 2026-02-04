@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 import { AdminService } from '../../../services/admin.service';
 import { Order } from '../../../models/order.model';
 
@@ -32,7 +33,7 @@ import { Order } from '../../../models/order.model';
                                     {{ item.quantity }}x {{ item.title }}
                                 </div>
                             </td>
-                            <td>$ {{ order.total_price }}</td>
+                            <td>₹ {{ order.total_price }}</td>
                             <td>
                                 <span class="badge" [ngClass]="getStatusClass(order.status)">
                                     {{ order.status }}
@@ -96,8 +97,9 @@ export class AdminOrdersComponent implements OnInit {
         this.adminService.updateOrderStatus(order.id, newStatus).subscribe({
             next: () => {
                 order.status = newStatus;
+                Swal.fire('Updated', `Order marked as ${newStatus}`, 'success');
             },
-            error: (err) => alert('Failed to update status')
+            error: (err) => Swal.fire('Error', 'Failed to update status', 'error')
         });
     }
 }

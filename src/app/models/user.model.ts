@@ -1,8 +1,9 @@
 export interface Address {
+    street: string;
     city: string;
     state: string;
     country: string;
-    pincode: string;
+    zip_code: string;
 }
 
 export interface User {

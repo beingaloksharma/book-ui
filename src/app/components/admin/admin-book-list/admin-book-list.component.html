@@ -26,7 +26,7 @@
                         </div>
                     </td>
                     <td>{{ book.author }}</td>
-                    <td>${{ book.price }}</td>
+                    <td>₹{{ book.price }}</td>
                     <td>{{ book.stock }}</td> <!-- using pages as proxy for stock/info for now -->
                     <td>
                         <span (click)="updateStatus(book)" [class]="'status-badge ' + book.status"

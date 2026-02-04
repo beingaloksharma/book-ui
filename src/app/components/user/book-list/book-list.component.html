@@ -28,7 +28,7 @@
         <h3>{{ book.title | truncate:30 }}</h3>
         <p class="author">by {{ book.author }}</p>
         <div class="book-meta">
-          <span class="price">${{ book.price }}</span>
+          <span class="price">₹{{ book.price }}</span>
           <button [routerLink]="['/book', book.id]" class="add-btn">
             View
           </button>

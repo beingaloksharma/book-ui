@@ -1,66 +1,222 @@
-.profile-container {
-    padding-top: 40px;
-    max-width: 800px;
+.profile-container-3d {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    perspective: 1500px;
 }
 
-.profile-card {
-    text-align: center;
+.card-3d-wrapper {
+    width: 100%;
+    max-width: 500px;
+    height: 600px;
 }
 
-.profile-header {
-    margin-bottom: 40px;
+.card-3d {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: rotateX(5deg);
 }
 
-.avatar-placeholder {
+.card-3d:hover {
+    transform: rotateX(0deg) translateY(-10px);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 24px;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header-bg {
+    height: 150px;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    position: relative;
+    margin-bottom: 60px;
+    /* Space for avatar overlap */
+}
+
+/* 3D Avatar Cube */
+.avatar-container {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100px;
     height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    color: white;
-    font-size: 3rem;
-    font-weight: 700;
+    perspective: 600px;
+}
+
+.avatar-cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotateAvatar 10s infinite linear;
+}
+
+.avatar-cube .face {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: #4f46e5;
+    border: 2px solid rgba(255, 255, 255, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
-    font-family: var(--font-serif);
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
-.role {
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 0.875rem;
-    color: var(--text-light);
-    font-weight: 600;
-    margin-top: 5px;
+.avatar-cube .front {
+    transform: translateZ(50px);
 }
 
-.profile-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    text-align: left;
-    border-top: 1px solid #f1f5f9;
-    padding-top: 30px;
+.avatar-cube .back {
+    transform: rotateY(180deg) translateZ(50px);
 }
 
-.detail-group h3 {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    color: var(--text-primary);
+.avatar-cube .right {
+    transform: rotateY(90deg) translateZ(50px);
 }
 
-.detail-group p {
-    margin: 8px 0;
-    color: var(--text-secondary);
+.avatar-cube .left {
+    transform: rotateY(-90deg) translateZ(50px);
 }
 
-.profile-actions {
-    margin-top: 40px;
+.avatar-cube .top {
+    transform: rotateX(90deg) translateZ(50px);
 }
 
-.loading {
+.avatar-cube .bottom {
+    transform: rotateX(-90deg) translateZ(50px);
+}
+
+@keyframes rotateAvatar {
+    0% {
+        transform: rotateX(-15deg) rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateX(-15deg) rotateY(360deg);
+    }
+}
+
+.user-intro {
     text-align: center;
-    padding: 40px;
-    color: var(--text-secondary);
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+}
+
+.user-intro h1 {
+    font-size: 1.8rem;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+    font-weight: 800;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    background: #f3f4f6;
+    color: #4b5563;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.role-badge.admin {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+.info-grid {
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-item.full-width {
+    grid-column: span 2;
+}
+
+.info-item .label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.info-item .value {
+    color: #374151;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.address-box {
+    background: #f9fafb;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px dashed #d1d5db;
+}
+
+.address-box p {
+    margin: 0;
+    color: #4b5563;
+}
+
+.address-box .zip {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
+}
+
+/* Loading State */
+.loading-state {
+    text-align: center;
+    color: white;
+}
+
+.loader-3d {
+    width: 50px;
+    height: 50px;
+    border: 4px solid white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

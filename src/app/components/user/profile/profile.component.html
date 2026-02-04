@@ -1,35 +1,50 @@
-<div class="container profile-container">
-    <div class="card profile-card" *ngIf="user; else loading">
-        <div class="profile-header">
-            <div class="avatar-placeholder">{{ user.name.charAt(0) }}</div>
-            <h1>{{ user.name }}</h1>
-            <p class="role">{{ user.role }}</p>
-        </div>
+<div class="profile-container-3d">
+    <div class="card-3d-wrapper" *ngIf="user; else loading">
+        <div class="card-3d">
+            <!-- Front Face -->
+            <div class="card-face front">
+                <div class="card-header-bg"></div>
+                <div class="avatar-container">
+                    <div class="avatar-cube">
+                        <div class="face front">{{ user.name.charAt(0) }}</div>
+                        <div class="face back"></div>
+                        <div class="face right"></div>
+                        <div class="face left"></div>
+                        <div class="face top"></div>
+                        <div class="face bottom"></div>
+                    </div>
+                </div>
 
-        <div class="profile-details">
-            <div class="detail-group">
-                <h3>Contact Information</h3>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-                <p><strong>Username:</strong> {{ user.username }}</p>
-            </div>
+                <div class="user-intro">
+                    <h1>{{ user.name }}</h1>
+                    <span class="role-badge" [class.admin]="user.role === 'admin'">{{ user.role }}</span>
+                </div>
 
-            <div class="detail-group" *ngIf="user.address && user.address.length > 0">
-                <h3>Addresses</h3>
-                <div *ngFor="let addr of user.address; let i = index" class="address-item">
-                    <p><strong>Address {{i+1}}:</strong></p>
-                    <p>{{ addr.city }}, {{ addr.state }}</p>
-                    <p>{{ addr.country }} - {{ addr.pincode }}</p>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Username</span>
+                        <span class="value">&#64;{{ user.username }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Email</span>
+                        <span class="value">{{ user.email }}</span>
+                    </div>
+                    <div class="info-item full-width" *ngIf="user.address && user.address.length > 0">
+                        <span class="label">Primary Address</span>
+                        <div class="address-box">
+                            <p>{{ user.address[0].street }}, {{ user.address[0].city }}, {{ user.address[0].state }}</p>
+                            <p class="zip">{{ user.address[0].country }} - {{ user.address[0].zip_code }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="profile-actions">
-            <!-- Future: Edit Profile, View Order History -->
-            <button class="btn btn-secondary">Edit Profile</button>
         </div>
     </div>
 
     <ng-template #loading>
-        <div class="loading">Loading profile...</div>
+        <div class="loading-state">
+            <div class="loader-3d"></div>
+            <p>Loading Profile...</p>
+        </div>
     </ng-template>
 </div>

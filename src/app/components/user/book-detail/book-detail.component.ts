@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { BookService } from '../../../services/book.service';
 import { Book } from '../../../models/book.model';
@@ -65,11 +66,21 @@ export class BookDetailComponent implements OnInit {
         this.cartService.addToCart(item).subscribe({
             next: () => {
                 this.addingToCart = false;
-                alert('Book added to cart!');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Added to Cart',
+                    text: 'Book added to cart successfully!',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             },
             error: (err) => {
                 this.addingToCart = false;
-                alert('Failed to add to cart');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to add to cart'
+                });
                 console.error(err);
             }
         });

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { BookService } from '../../../services/book.service';
 import { Book } from '../../../models/book.model';
@@ -62,25 +63,35 @@ export class BookFormComponent implements OnInit {
         if (this.isEditMode) {
             this.bookService.updateBook(this.book).subscribe({
                 next: () => {
-                    alert('Book updated successfully');
-                    this.router.navigate(['/admin/books']);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Book updated successfully'
+                    }).then(() => {
+                        this.router.navigate(['/admin/books']);
+                    });
                 },
                 error: (err) => {
                     console.error(err);
                     this.loading = false;
-                    alert('Failed to update book');
+                    Swal.fire('Error', 'Failed to update book', 'error');
                 }
             });
         } else {
             this.bookService.createBook(this.book).subscribe({
                 next: () => {
-                    alert('Book created successfully');
-                    this.router.navigate(['/admin/books']);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Book created successfully'
+                    }).then(() => {
+                        this.router.navigate(['/admin/books']);
+                    });
                 },
                 error: (err) => {
                     console.error(err);
                     this.loading = false;
-                    alert('Failed to create book');
+                    Swal.fire('Error', 'Failed to create book', 'error');
                 }
             });
         }
